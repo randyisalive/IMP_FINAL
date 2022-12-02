@@ -110,14 +110,9 @@ def flip():
     return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
 
 
-# crop filename from (x1,y1) to (x2,y2)
-@app.route("/crop", methods=["POST"])
-def crop():
-    # retrieve parameters from html form
-    x1 = int(request.form['x1'])
-    y1 = int(request.form['y1'])
-    x2 = int(request.form['x2'])
-    y2 = int(request.form['y2'])
+@app.route("/cropSquare", methods=['POST'])     # type: ignore
+def sCrop():
+
     filename = request.form['image']
 
     # open image
@@ -126,38 +121,25 @@ def crop():
     image_destination = "static/images/" + filename
     img = Image.open(destination)
 
-    # check for valid crop parameters
-    width = img.size[0]
-    height = img.size[1]
+    # Crop image
+    box = (250,250,750,750)
+    img2 = img.crop(box)
 
-    crop_possible = True
-    if not 0 <= x1 < width:
-        crop_possible = False
-    if not 0 < x2 <= width:
-        crop_possible = False
-    if not 0 <= y1 < height:
-        crop_possible = False
-    if not 0 < y2 <= height:
-        crop_possible = False
-    if not x1 < x2:
-        crop_possible = False
-    if not y1 < y2:
-        crop_possible = False
+     # save and return image
+    destination = "/".join([target, 'temp.png'])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img2.save(destination)
+    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
 
-    # crop image and show
-    if crop_possible:
-        img = img.crop((x1, y1, x2, y2))
-        
-        # save and return image
-        destination = "/".join([target, 'temp.png'])
-        if os.path.isfile(destination):
-            os.remove(destination)
-        img.save(destination)
-        return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
 
-    else:
-        return render_template("error.html", message="Crop dimensions not valid"), 400
-    return '', 204
+
+# crop filename from (x1,y1) to (x2,y2)
+@app.route("/crop", methods=["POST"])
+def crop():
+    pass
+   
+
 
 
 # blend filename with stock photo and alpha parameter

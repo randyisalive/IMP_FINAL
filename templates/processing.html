@@ -44,6 +44,7 @@
                     <input type="text" class="hidden" name="image" value="{{ image_name }}">
 
                 </form>
+                <!--
 
                 <h4>Crop (STILL BUGGY)</h4>
                 <form id="form-crop"" action=" {{ url_for('crop') }}" method="POST" enctype="multipart/form-data">
@@ -53,8 +54,9 @@
                     <input type="number" placeholder="y2" min="0" name="y2" required>
                     <button id="btnCrop" class="btn btn-lg btn-success" type="submit">Go</button>
                     <input type="text" class="hidden" name="image" value="{{ image_name }}">
-                </form>
+                </form> -->
             </div>
+
 
             <div class="col-lg-6">
                 <h4>Rotate</h4>
@@ -83,6 +85,11 @@
 
         <form action="{{ url_for('grayscale') }}" method="POST" enctype="multipart/form-data">
             <h4>Grayscale</h4>
+            <input type="text" class="hidden" name="image" value="{{ image_name }}">
+            <input type="submit" value="go">
+        </form>
+        <form action="{{ url_for('sCrop') }}" method="POST" enctype="multipart/form-data">
+            <h4>Crop Square</h4>
             <input type="text" class="hidden" name="image" value="{{ image_name }}">
             <input type="submit" value="go">
         </form>
