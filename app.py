@@ -3,15 +3,11 @@
 from flask import Flask, request, render_template, send_from_directory, redirect, url_for
 import os
 from PIL import Image
-from flask_debugtoolbar import DebugToolbarExtension
-import numpy as np
 import cv2
-from convolve import convolve
 
 app = Flask(__name__)
 app.secret_key = '1'
 app.debug = True
-toolbar = DebugToolbarExtension(app)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
