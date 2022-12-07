@@ -215,19 +215,6 @@ def grayscale():
     return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination, x=x)
 
     
-    
-    
-    
-    
-
-
-    
-
-
-# retrieve file from 'static/images' directory
-@app.route('/static/images/<filename>')
-def send_image(filename):
-    return send_from_directory("static/images", filename)
 
 
 if __name__ == "__main__":
