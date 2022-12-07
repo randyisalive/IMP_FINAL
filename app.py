@@ -112,11 +112,12 @@ def flip():
     if os.path.isfile(destination):
         os.remove(destination)
     img.save(destination)
-    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
+    return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination, x=x)
 
 
 @app.route("/cropSquare", methods=['POST'])     # type: ignore
 def sCrop():
+    x = False
 
     filename = request.form['image']
 
@@ -135,59 +136,15 @@ def sCrop():
     if os.path.isfile(destination):
         os.remove(destination)
     img2.save(destination)
-    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
+    return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination,x=x)
 
 
-
-# crop filename from (x1,y1) to (x2,y2)
-@app.route("/crop", methods=["POST"])
-def crop():
-    pass
-   
-
-
-
-# blend filename with stock photo and alpha parameter
-#@app.route("/blend", methods=["POST"])
-# def blend():
-    # retrieve parameters from html form
-    alpha = request.form['alpha']
-    filename1 = request.form['image']
-
-    # open images
-    target = os.path.join(APP_ROOT, 'static/images')
-    filename2 = 'blend.jpg'
-    destination1 = "/".join([target, filename1])
-    destination2 = "/".join([target, filename2])
-
-    img1 = Image.open(destination1)
-    img2 = Image.open(destination2)
-
-    # resize images to max dimensions
-    width = max(img1.size[0], img2.size[0])
-    height = max(img1.size[1], img2.size[1])
-
-    img1 = img1.resize((width, height), Image.ANTIALIAS)
-    img2 = img2.resize((width, height), Image.ANTIALIAS)
-
-    # if image in gray scale, convert stock image to monochrome
-    if len(img1.mode) < 3:
-        img2 = img2.convert('L')
-
-    # blend and show image
-    img = Image.blend(img1, img2, float(alpha)/100)
-
-     # save and return image
-    destination = "/".join([target, 'temp.png'])
-    if os.path.isfile(destination):
-        os.remove(destination)
-    img.save(destination)
-
-    return send_image('temp.png')
 
 
 @app.route('/negative', methods=['POST','GET'])
 def negative():
+    # Controller #
+    x = False
     # open image
     filename = request.form['image']
     target = os.path.join(APP_ROOT, 'static/images')
@@ -202,7 +159,7 @@ def negative():
     os.chdir(directory)
     cv2.imwrite('temp.png', img_neg)
     
-    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
+    return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination, x=x)
 
     
     
@@ -211,6 +168,8 @@ def negative():
 
 @app.route('/blur', methods=['POST','GET'])
 def blur():
+    # Controller #
+    x = False
 
     # open image
     filename = request.form['image']
@@ -232,11 +191,13 @@ def blur():
     
     
     
-    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
+    return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination, x=x)
 
 
 @app.route('/grayscale', methods=['POST','GET'])
 def grayscale():
+    # Controller #
+    x = False
      # open image
     filename = request.form['image']
     target = os.path.join(APP_ROOT, 'static/images')
@@ -251,7 +212,7 @@ def grayscale():
     os.chdir(directory)
     cv2.imwrite('temp.png', gray)
     
-    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
+    return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination, x=x)
 
     
     
