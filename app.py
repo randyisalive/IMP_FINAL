@@ -24,6 +24,7 @@ def main():
 # upload selected image and forward to processing page
 @app.route("/upload", methods=["POST"])
 def upload():
+    x = True
     target = os.path.join(APP_ROOT, 'static/images/')
 
     # create image directory if not found
@@ -37,7 +38,7 @@ def upload():
 
     # file support verification
     ext = os.path.splitext(filename)[1]  # type: ignore
-    if (ext == ".jpg") or (ext == ".png") or (ext == ".bmp"):
+    if (ext == ".jpg") or (ext == ".png") or (ext == ".bmp") or (ext == ".jpeg"):
         print("File accepted")
     else:
         return render_template("error.html", message="The selected file is not supported"), 400
@@ -48,12 +49,14 @@ def upload():
     upload.save(destination)
 
     # forward to processing page
-    return render_template("processing.html", image_name=filename)
+    return render_template("processing_new.html", image_name=filename, x=x)
 
 
 # rotate filename the specified degrees
 @app.route("/rotate", methods=["POST"])
 def rotate():
+    # Controller #
+    x = False
     # retrieve parameters from html form
     angle = request.form['angle']
     filename = request.form['image']
@@ -72,13 +75,15 @@ def rotate():
         os.remove(destination)
     img.save(destination)
 
-    return render_template('result.html', img1="static/images/temp.png", img2=image_destination)
+    return render_template('processing_new.html', img1="static/images/temp.png", img2=image_destination, x=x)
     
 
 
 # flip filename 'vertical' or 'horizontal'
 @app.route("/flip", methods=["POST"])
 def flip():
+    # Controller #
+    x = False
 
     # retrieve parameters from html form
     if 'horizontal' in request.form['mode']:
